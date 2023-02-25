@@ -6,15 +6,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { router } from './router/router';
-import WebFont from 'webfontloader';
 
-  useEffect(()=>{
-    WebFont.load({
-      google: {
-        families: ['Droid Sans', 'Chilanka']
-      }
-    });
-  },[])
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
