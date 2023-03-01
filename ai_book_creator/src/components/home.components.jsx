@@ -3,6 +3,8 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import HeaderKidsPic from '../assets/images/headerImage.jpg'
@@ -13,6 +15,9 @@ import AIWriter from '../assets/images/AIWRITER.png'
 import SecondPageCover from '../assets/images/Margo.jpg'
 import StyledText from '../assets/images/textStyled.png'
 import Pencil from '../assets/images/pencil.png'
+import Card1img from '../assets/images/card1.png'
+import Card2img from '../assets/images/card2.png'
+import Card3img from '../assets/images/card3.png'
 import '../index.css'
 import './components.css'
 
@@ -138,11 +143,11 @@ export const LearnMore = ()=>{
 
 
   return (
-    <Box sx={{width: '100%', height: 700, background: `url(${AIWriter})`,opacity: 0.8}}>
+    <Box sx={{width: '100%', height: 600, background: `url(${AIWriter})`,opacity: 0.8}}>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <Box sx={{width: '100%', height: '100%'}}>
-            <img style={{width: '100%', height: '100%'}} src={StyledText}/>
+          <Box sx={{width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems:'center'}}>
+            <img style={{width: '90%', height: '90%'}} src={StyledText}/>
           </Box>
         </Grid>
 
@@ -164,3 +169,19 @@ export const LearnMore = ()=>{
 
   )
 }
+
+export const CardsSection = ()=>{
+
+  
+
+
+
+  return (
+    <Box sx={{width: '100%', height: 500, background:'black', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+        <Box sx={{width: 250, height: 250, background: `url(${Card1img})`}}>
+          {/* <img src={} style={{width: '100%', height: 300}}/> */}
+        </Box>
+    </Box>
+  )
+}
+
