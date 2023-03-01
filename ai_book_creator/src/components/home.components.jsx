@@ -9,7 +9,10 @@ import HeaderKidsPic from '../assets/images/headerImage.jpg'
 import HeaderImg from '../assets/images/Clouds.jpg'
 import HTMLFlipBook from 'react-pageflip';
 import BookCover from '../assets/images/bookCover.jpg'
+import AIWriter from '../assets/images/AIWRITER.png'
 import SecondPageCover from '../assets/images/Margo.jpg'
+import StyledText from '../assets/images/textStyled.png'
+import Pencil from '../assets/images/pencil.png'
 import '../index.css'
 import './components.css'
 
@@ -88,9 +91,9 @@ export const BookSection = ()=>{
 
   return (
       <Box sx={{width: '100%', height: 500, backgroundColor: '#f5f5f5'}}>
-        <Grid style={{marginTop: 10}} container spacing={2}>
+        <Grid  container >
           <Grid item xs={5}>
-            <Box sx={{width: "80%", margin: 'auto', height: 500, display: 'flex', alignItems: 'baseline', flexDirection: 'column' , justifyContent: 'center'}}>
+            <Box sx={{width: "80%", margin: 'auto', height: 485, display: 'flex', alignItems: 'baseline', flexDirection: 'column' , justifyContent: 'center'}}>
               <span style={{background: 'linear-gradient(to right bottom, #f12711,  #f5af19', marginBottom: 5}}>
                 <Typography style={{fontFamily: 'Roboto', marginBottom: 2}} color={'white'}  variant='h2'>
                   <b>TRANSFORM .</b>
@@ -109,7 +112,7 @@ export const BookSection = ()=>{
             </Box>
           </Grid>
 
-          <Grid item xs={7}>
+          <Grid  item xs={7}>
             <Box style={{width: '60%', height: '100%',margin: 'auto', position: 'relative'}}>
               <img src={BookCover} style={{width: '100%', height: '100%', position: 'absolute', zIndex: 1}}/>
               <Box sx={{width: '100%', height: '100%', position: 'absolute', zIndex: 2, display: 'flex', flexDirection: 'column', justifyContent: 'center',alignItems: 'center', color: 'white', margin: 'auto', backgroundColor: 'rgba(0,0,0,0.4)'}}>
@@ -126,5 +129,38 @@ export const BookSection = ()=>{
           </Grid>
       </Grid>
       </Box>
+  )
+}
+
+
+export const LearnMore = ()=>{
+
+
+
+  return (
+    <Box sx={{width: '100%', height: 700, background: `url(${AIWriter})`,opacity: 0.8}}>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <Box sx={{width: '100%', height: '100%'}}>
+            <img style={{width: '100%', height: '100%'}} src={StyledText}/>
+          </Box>
+        </Grid>
+
+        <Grid item xs={6}>
+          <Box sx={{width: '70%', height: '100%', display: 'flex', alignItems: 'center', margin: 'auto', flexDirection: 'column', marginTop: 15}}>
+            <img style={{width: 200, height: 200}} src={Pencil}/>
+
+              <Typography textAlign={'center'} variant='h4'>
+                <b>Start Writing your ideas using our writing tool powered by gpt-3</b>
+              </Typography>
+
+              <Button variant='contained' style={{width: 200, height: 60, background: 'linear-gradient(to right bottom, #f12711,  #f5af19', borderRadius: 15, fontSize: 20, marginTop: 30}}>
+                Learn More
+              </Button>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
+
   )
 }

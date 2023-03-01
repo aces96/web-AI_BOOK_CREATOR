@@ -1,5 +1,5 @@
 import { Box } from "@mui/material"
-import { NavBar, Header, BookSection } from "../components/home.components"
+import { NavBar, Header, BookSection, LearnMore } from "../components/home.components"
 
 
 export const Home = ()=>{
@@ -9,6 +9,7 @@ export const Home = ()=>{
             <NavBar/>
             <Header/>
             <BookSection />
+            <LearnMore/>
             {/* <div style={{width: '100%',  height: '90%'}}></div> */}
 
         </Box>
