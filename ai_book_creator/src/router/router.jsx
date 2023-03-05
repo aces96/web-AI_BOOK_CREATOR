@@ -4,6 +4,7 @@ import {
 import App from "../App";
 import { Pricing } from "../pages/pricing";
 import { Login } from "../pages/login";
+import { BookCreator } from "../pages/bookCreator";
 
 
 export const router = createBrowserRouter([
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
     {
         path: "/login",
         element: <Login/>,
+    },
+    {
+        path: "/book",
+        element: <BookCreator/>,
     },
     ]);
     
