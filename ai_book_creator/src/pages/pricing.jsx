@@ -6,6 +6,7 @@ import { PricingSection } from "../components/pricing.components"
 
 
 
+
 export const Pricing = ()=>{
 
     return (
