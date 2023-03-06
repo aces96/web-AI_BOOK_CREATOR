@@ -5,6 +5,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { ReactComponent as Empty } from '../assets/empty.svg'
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 
 
@@ -37,8 +39,26 @@ export const SideBar = (props)=>{
                             }} size='small' variant="outlined" placeholder="enter a title" value={props.title} style={{width: '95%', backgroundColor: 'white', color: 'black'}}/>
                         }
                     </Box>
-
-                    <Typography  textAlign={'center'} variant="body2">
+                    <Typography style={{marginBottom: 10}} textAlign={'center'} variant="body2">
+                        Select A writing Style
+                    </Typography>
+                    <Select
+                        style={{backgroundColor: 'white', width: 300}}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        size="small"
+                        value={props.writingStyle}
+                        onChange={(e)=>{
+                            props.handleStyle(e)
+                        }}
+                        defaultValue={'None'}
+                        >
+                        <MenuItem value={'Persuasive'}>Persuasive</MenuItem>
+                        <MenuItem value={'Narrative'}>Narrative</MenuItem>
+                        <MenuItem value={'Expository'}>Expository</MenuItem>
+                        <MenuItem value={'Descriptive'}>Descriptive</MenuItem>
+                    </Select>
+                    <Typography style={{marginTop: 30}}  textAlign={'center'} variant="body2">
                         Provide specific details and examples to get best results and help Gpt-3 understand the context and purpose of the page.
                     </Typography>
                     <TextField rows={5} multiline style={{backgroundColor: 'white', marginTop: 20, width: '95%', marginBottom: 40}}  variant="outlined" placeholder="describe your idea"/>

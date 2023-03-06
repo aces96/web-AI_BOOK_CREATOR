@@ -11,6 +11,7 @@ export const BookCreator = ()=>{
     const [step, setStep] = useState(1)
     const [addTitle, setAddTitle] = useState(true)
     const [title, setTitle] = useState('This is the title')
+    const [writingStyle, setWritingStyle] = useState('')
 
 
     const Item = styled(Paper)(({ theme }) => ({
@@ -24,6 +25,11 @@ export const BookCreator = ()=>{
       const handleTitleButton = ()=>{
         setAddTitle(!addTitle)
       }
+
+      const handleStyle = (e)=>{
+        setWritingStyle(e.target.value)
+        console.log(e.target.value);
+      }
       
 
 
@@ -34,7 +40,7 @@ export const BookCreator = ()=>{
         <Box sx={{ flexGrow: 1, height: '100vh'}}>
             <Grid zeroMinWidth={true} container style={{ height: '100vh', overflow: 'auto'}}>
                 <Grid item xs={3}>
-                    <SideBar handleTitleButton={handleTitleButton} handleTitleInput={(e)=>{
+                    <SideBar handleStyle={handleStyle} writingStyle={writingStyle} handleTitleButton={handleTitleButton} handleTitleInput={(e)=>{
                         setTitle(e.target.value)
                     }} title={title} addTitle={addTitle}  step={step}/>
                 </Grid>
