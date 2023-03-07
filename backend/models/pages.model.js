@@ -1,23 +1,25 @@
 const mongoose = require('mongoose');
 
-const bookingSchema = new mongoose.Schema({
-    date_from: {
-        type: Date,
-        required: true
-    },
-    date_to: {
-        type: Date,
-        required: true
-    },
-    total_price: {
+const pageSchema = new mongoose.Schema({
+    number: {
         type: Number,
         required: true
+    },
+    content: {
+        type: {
+            title: String,
+            body: String
+        }
     },
     user_id: {
         type: mongoose.Schema.ObjectId,
         ref: 'user',
+    },
+    book_id: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'book',
     }
 });
 
-const booking = mongoose.model('book', bookingSchema);
-module.exports = booking;
+const page = mongoose.model('page', pageSchema);
+module.exports = page;

@@ -1,4 +1,4 @@
-import { Box, Typography, Button, Badge, TextField, Paper } from "@mui/material"
+import { Box, Typography, Button, Badge, TextField, Paper, IconButton } from "@mui/material"
 import { useState } from "react"
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -7,6 +7,13 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 
@@ -102,22 +109,81 @@ export const PageContainer = (props)=>{
             }
 
             {props.step == 1 &&
-                <Box sx={{width: '100%',height: '93vh', backgroundColor: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                    <Paper style={{width: 550, minHeight: 600, border: '2px solid black', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                        <Typography style={{marginBottom: 20}}  variant="h4" color={'black'}>
-                            {props.title}
-                        </Typography>
-                        <Box sx={{width: '85%'}}>
-                            <Typography lineHeight={1.7} textAlign={'start'} variant="body2" color={'black'}>
-                            What is Lorem Ipsum?
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                            Why do we use it?
-                            It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                            </Typography>
-                        </Box>
-                    </Paper>
-                </Box>
+                // <Box sx={{width: '100%',height: '93vh', backgroundColor: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                //     <Paper style={{width: 550, minHeight: 600, border: '2px solid black', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                //         <Typography style={{marginBottom: 20}}  variant="h4" color={'black'}>
+                //             {props.title}
+                //         </Typography>
+                //         <Box sx={{width: '85%'}}>
+                //             <Typography lineHeight={1.7} textAlign={'start'} variant="body2" color={'black'}>
+                //             What is Lorem Ipsum?
+                //             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                //             Why do we use it?
+                //             It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                //             </Typography>
+                //         </Box>
+                //     </Paper>
+                // </Box>
+                <BooksTables />
             }
         </Box>
+    )
+}
+
+
+export const BooksTables = ()=>{
+
+    function createData(
+        name,
+        calories,
+        fat,
+        carbs,
+        protein,
+      ) {
+        return { name, calories, fat, carbs};
+      }
+
+    const rows = [
+        createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+        createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+        createData('Eclair', 262, 16.0, 24, 6.0),
+        createData('Cupcake', 305, 3.7, 67, 4.3),
+        createData('Gingerbread', 356, 16.0, 49, 3.9),
+      ];
+
+    return(
+        <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Books</TableCell>
+              <TableCell align="right">Title</TableCell>
+              <TableCell align="right">Number of Pages</TableCell>
+              <TableCell align="right">Created at</TableCell>
+              <TableCell align="right">Action</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.name}
+                </TableCell>
+                <TableCell align="right">{row.calories}</TableCell>
+                <TableCell align="right">{row.fat}</TableCell>
+                <TableCell align="right">{row.carbs}</TableCell>
+                <TableCell align="right">
+                    <IconButton style={{color:"red"}} >
+                        <DeleteIcon />
+                    </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     )
 }
