@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const express = require('express');
 const dotenv = require('dotenv').config();
 const cors = require('cors');
+const bookRouter = require('./router/book.router')
+const pageRouter = require('./router/page.router')
 
 
 
@@ -13,6 +15,9 @@ app.options('*', cors());
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
+
+app.use('/api', bookRouter)
+app.use('/api', pageRouter)
 
 
 
