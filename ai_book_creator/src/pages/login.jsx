@@ -5,12 +5,16 @@ import AiIcon from '../assets/images/AIIcon.png'
 // import GoogleIcon from '@mui/icons-material/Google';
 import GoogleIcon from '../assets/images/logoGoogle.png'
 import MicrosoftIcon from '../assets/images/microsoftIcon.png'
+import { useNavigate } from "react-router-dom";
 import '@fontsource/roboto/700.css';
 
 
 
 
 export const Login = ()=>{
+
+    let navigate = useNavigate(); 
+
 
 
     return (
@@ -29,7 +33,7 @@ export const Login = ()=>{
                 </Typography>
 
 
-                <Button style={{width: '90%', height: 40, marginBottom: 10, position: 'relative'}} variant="outlined">
+                <Button href='http://localhost:8080/auth/google' style={{width: '90%', height: 40, marginBottom: 10, position: 'relative'}} variant="outlined">
                     <img style={{width: 30, height: 30, position: 'absolute', left: 5}} src={GoogleIcon} />
                     Login with Google
                 </Button>

@@ -10,13 +10,11 @@ const userSchema = new mongoose.Schema({
         required: [true, 'A User must have an email'],
         unique: true,
     },
-    password: {
-        type: String,
-        required: [true, 'A user must have a passowrd'],
+    google_id:{
+        type: String
     },
-    pages: {
-            type: mongoose.Schema.ObjectId,
-            ref: 'pages',
+    secret: {
+        type: String
     }
 });
 

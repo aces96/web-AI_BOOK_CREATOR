@@ -28,7 +28,7 @@ exports.createPage = async (req,res)=>{
         await addPage.save()
 
         res.status(200).json({
-            data: content
+            data: content.choices[0].text
         })
     } catch (error) {
         res.status(400).send(error)
