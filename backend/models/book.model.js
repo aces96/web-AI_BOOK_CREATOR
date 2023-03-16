@@ -9,7 +9,10 @@ const bookSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'user',
     },
-    pages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'page'}]
+    pages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'page'}],
+    createdAt : {
+        type: String
+    }
 });
 
 const book = mongoose.model('book', bookSchema);

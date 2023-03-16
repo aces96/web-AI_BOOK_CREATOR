@@ -8,9 +8,9 @@ router.route('/createBook')
         .post(createBook)
 
 router.route('/getAllBooks')
-        .get(findAllBooks)
+        .post(findAllBooks)
 
 router.route('/removeBook')
         .post(removeBook)
 
-exports.module = router
+module.exports = router

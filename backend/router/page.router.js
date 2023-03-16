@@ -8,4 +8,4 @@ router.route('/createPage')
         .post(createPage)
 
 
-exports.module = router
+module.exports = router

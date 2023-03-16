@@ -2,29 +2,66 @@ import { Box, Paper, Typography, Badge } from "@mui/material"
 import Grid from '@mui/material/Grid';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { SideBar, BooksTables, PagesTable, AddBookModal } from "../components/bookCreator.components";
+import { SideBar, BooksTables, PagesTable, AddBookModal, Page } from "../components/bookCreator.components";
 import { styled } from '@mui/material/styles';
 import { useState, useEffect } from "react";
-import { Routes, Route, Outlet, useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams, useLoaderData, useNavigate } from 'react-router-dom';
+import axios from 'axios'
+
+
 
 
 
 
 
 export const BookCreator = ()=>{
+    const [searchParams] = useSearchParams()
+    const navigate = useNavigate()
     const [step, setStep] = useState(1)
     const [addTitle, setAddTitle] = useState(true)
-    const [title, setTitle] = useState('This is the title')
+    const [booksData, setBooksData] = useState([])
+    const [bookId, setBookId] = useState('')
+    const [pagesData, setPagesData] = useState([])
+    const [bookTitleInput, setBookTitleInput] = useState("")
+    const [loading, setLoading] = useState(false)
+    const [title, setTitle] = useState('Untitled')
+    const [description, setDescription] = useState('')
     const [writingStyle, setWritingStyle] = useState('')
+    const [generating, setGenerating] = useState(false)
+    const [content,setContent] = useState('')
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const id = searchParams.get("id");
+    const email = searchParams.get("email");
+    const fullname = searchParams.get("fullname");
+    const secret = searchParams.get("secret");
     const location = useLocation()
+    const books = useLoaderData()
+
+
+
 
 
     useEffect(()=>{
-        console.log(location.pathname)
-    },[location])
+            if (email && fullname && secret && id) {
+              localStorage.setItem(
+                "user",
+                JSON.stringify({
+                    id,
+                    email,
+                    fullname,
+                    secret,
+                })
+              );
+            }
+    },[])
+
+    useEffect(()=>{
+
+        setBooksData(books)
+        console.log('books',books.data);
+    },[])
 
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -42,7 +79,61 @@ export const BookCreator = ()=>{
         setWritingStyle(e.target.value)
         console.log(e.target.value);
       }
+
+    const handleDescription = (e)=>{
+        setDescription(e)
+    }
       
+
+    const handleSaveBook = async ()=>{
+        setLoading(true)
+        const data =  localStorage.getItem('user')
+        const user =  JSON.parse(data)
+
+
+        const saveBook = await axios.post('http://localhost:8080/api/createBook', {
+            title: bookTitleInput,
+            user_id: user.id,
+            createdAt: new Date().toISOString().slice(0, 10)
+        }, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        console.log('saved', saveBook);
+        setBooksData(saveBook.data.books)
+        setLoading(false)
+        setOpen(false)
+
+    }
+
+
+    const handleClick = async (data)=>{
+        console.log('daaaaaaaaaaata', data);
+        setBookId(data._id)
+        navigate('pages_table')
+    }
+
+    const handleGenerate = async ()=>{
+        let Data = await localStorage.getItem('user')
+        const user = await JSON.parse(Data)
+        const data = {
+            style: writingStyle,
+            description: description,
+            bookId: bookId,
+            userId: user.id,
+            title: title
+        }
+
+        const generateContent = await axios.post('http://localhost:8080/api/createPage', data, {
+            headers: {
+                'Content-Type': "application/json",
+                'Accept': "application/json",
+            }
+        })
+        setContent(generateContent.data.data)
+    }
 
 
 
@@ -50,10 +141,10 @@ export const BookCreator = ()=>{
 
     return (
         <Box sx={{ flexGrow: 1, height: '100vh'}}>
-            <AddBookModal open={open} handleClose={handleClose}/>
+            <AddBookModal loading={loading} handleSaveBook={handleSaveBook} value={bookTitleInput} handleChange={(e)=>setBookTitleInput(e)}  open={open} handleClose={handleClose}/>
             <Grid zeroMinWidth={true} container style={{ height: '100vh', overflow: 'auto'}}>
                 <Grid item xs={3}>
-                    <SideBar handleOpen={handleOpen} handleStyle={handleStyle} writingStyle={writingStyle} handleTitleButton={handleTitleButton} handleTitleInput={(e)=>{
+                    <SideBar handleGenerate={handleGenerate} description={description} handleDescription={handleDescription}  handleOpen={handleOpen} handleStyle={handleStyle} writingStyle={writingStyle} handleTitleButton={handleTitleButton} handleTitleInput={(e)=>{
                         setTitle(e.target.value)
                     }} title={title} addTitle={addTitle}  step={step}/>
                 </Grid>
@@ -73,8 +164,9 @@ export const BookCreator = ()=>{
                     </Box>
                 </Box>
             </Paper>
-            {location.pathname == '/book' && <BooksTables/>}
-            {location.pathname == '/book/pages_table' && <PagesTable/>}
+            {location.pathname == '/book' && booksData !== null && <BooksTables handleClick={handleClick} data={booksData}/>}
+            {location.pathname == '/book/pages_table' && <PagesTable data={pagesData}/>}
+            {location.pathname == '/book/create_page' && <Page content={content} title={title}/>}
             </Box>
             </Grid>
             </Grid>

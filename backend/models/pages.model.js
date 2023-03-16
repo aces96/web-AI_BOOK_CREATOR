@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 
 const pageSchema = new mongoose.Schema({
-    number: {
-        type: Number,
-        required: true
-    },
     content: {
         type: {
             title: String,
             body: String
-        }
+    }
+    },
+    title: {
+        type: String,
+        default: 'Untitled'
     },
     user_id: {
         type: mongoose.Schema.ObjectId,
@@ -18,6 +18,9 @@ const pageSchema = new mongoose.Schema({
     book_id: {
         type: mongoose.Schema.ObjectId,
         ref: 'book',
+    },
+    createdAt: {
+        type: String
     }
 });
 

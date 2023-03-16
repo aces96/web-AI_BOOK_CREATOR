@@ -30,8 +30,8 @@ app.use(express.urlencoded({extended:true}))
 app.use(passport.initialize());
 require("./auth/google.auth")(passport);
 
-// app.use('/api', bookRouter)
-// app.use('/api', pageRouter)
+app.use('/api', bookRouter)
+app.use('/api', pageRouter)
 app.use('/', googleAuth)
 
 

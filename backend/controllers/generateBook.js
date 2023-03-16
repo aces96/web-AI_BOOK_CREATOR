@@ -2,22 +2,17 @@ const bookModal = require('../models/book.model')
 
 
 exports.createBook = async(req,res)=>{
-    const {data} = req.body
+    const {title, user_id, createdAt} = req.body
+
+    console.log(user_id);
 
     try {
-        const newBook = new bookModal({title: data.title, user_id: data.user_id})
-        await newBook.save((error, savedDoc)=>{
-            if(error){
-                res.status(400).json({
-                    status: 'failed',
-                    message: error
-                })
-            }else{
-                res.status(200).json({
-                    status: 'saved',
-                    message: savedDoc
-                })
-            }
+        const newBook = new bookModal({title: title, user_id: user_id, createdAt: createdAt})
+        const book = await newBook.save()
+        const allBooks = await bookModal.find({user_id: user_id}).populate('pages')
+        res.status(200).json({
+        status: 'saved',
+        books: allBooks
         })
     } catch (error) {
         res.status(400).send(error)
@@ -28,12 +23,14 @@ exports.createBook = async(req,res)=>{
 exports.findAllBooks = async (req,res)=>{
 
     try {
-        const getAllBooks = await bookModal.find({});
+        const getAllBooks = await bookModal.find({user_id: req.body.id}).populate('pages');
+
+        console.log(getAllBooks);
 
         res.status(200).json({
             data: getAllBooks
         })
-    } catch (error) {
+    }catch (error) {
         res.status(400).send(error)
     }
 }
