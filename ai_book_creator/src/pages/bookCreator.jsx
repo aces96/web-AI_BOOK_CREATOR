@@ -5,7 +5,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { SideBar, BooksTables, PagesTable, AddBookModal, Page } from "../components/bookCreator.components";
 import { styled } from '@mui/material/styles';
 import { useState, useEffect } from "react";
-import { useLocation, useSearchParams, useLoaderData, useNavigate } from 'react-router-dom';
+import { useLocation, useSearchParams, useLoaderData, useNavigate , useRouteLoaderData} from 'react-router-dom';
 import axios from 'axios'
 
 
@@ -37,7 +37,9 @@ export const BookCreator = ()=>{
     const fullname = searchParams.get("fullname");
     const secret = searchParams.get("secret");
     const location = useLocation()
-    const books = useLoaderData()
+    const books = useRouteLoaderData('book')
+    const [whatever, setData] = useState([])
+
 
 
 
@@ -112,7 +114,7 @@ export const BookCreator = ()=>{
     const handleClick = async (data)=>{
         console.log('daaaaaaaaaaata', data);
         setBookId(data._id)
-        navigate('pages_table')
+        navigate(`pages_table/${data._id}`)
     }
 
     const handleGenerate = async ()=>{
@@ -165,7 +167,7 @@ export const BookCreator = ()=>{
                 </Box>
             </Paper>
             {location.pathname == '/book' && booksData !== null && <BooksTables handleClick={handleClick} data={booksData}/>}
-            {location.pathname == '/book/pages_table' && <PagesTable data={pagesData}/>}
+            {location.pathname.includes('/book/pages_table/') && <PagesTable />}
             {location.pathname == '/book/create_page' && <Page content={content} title={title}/>}
             </Box>
             </Grid>

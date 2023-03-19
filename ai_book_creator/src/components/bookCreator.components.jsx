@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Badge, TextField, Paper, IconButton, CircularProgress } from "@mui/material"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { ReactComponent as Empty } from '../assets/empty.svg'
@@ -14,11 +14,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Outlet, useLocation } from "react-router-dom";
+import {  useLocation, useParams, useLoaderData } from "react-router-dom";
 import Modal from '@mui/material/Modal';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate , useRouteLoaderData} from "react-router-dom";
+import NothingFound from '../assets/images/nothing.png'
 
 
 
@@ -54,7 +54,7 @@ export const SideBar = (props)=>{
                 </Box>
             }
 
-            {location.pathname == "/book/pages_table" && 
+            {location.pathname.includes("/book/pages_table/") && 
                 <Box sx={{width: '100%', height:'100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
                 <Typography color={'white'} variant="h6">
                     <b>Add a new page to your book</b>
@@ -111,37 +111,46 @@ export const SideBar = (props)=>{
 
 export const BooksTables = (props)=>{
 
-    return(
-        <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+
+      return (
+        <Box>
+        {props.data.length > 0  ? 
+
+          <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
-            <TableRow>
-              <TableCell >Title</TableCell>
-              <TableCell >Number of Pages</TableCell>
-              <TableCell >Created at</TableCell>
-              <TableCell >Action</TableCell>
-            </TableRow>
+          <TableRow>
+          <TableCell >Title</TableCell>
+          <TableCell >Number of Pages</TableCell>
+          <TableCell >Created at</TableCell>
+          <TableCell >Action</TableCell>
+          </TableRow>
           </TableHead>
           <TableBody>
-            {props.data.map((row) => (
-              <TableRow
-                key={row.title}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell><a style={{cursor: 'pointer', textDecoration: 'underline'}} onClick={()=>props.handleClick(row)}>{row.title}</a></TableCell>
-                <TableCell >{row.pages.length}</TableCell>
-                <TableCell >{row.createdAt}</TableCell>
-                <TableCell >
-                    <IconButton style={{color:"red"}} >
-                        <DeleteIcon />
-                    </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
+          {props.data.map((row) => (
+          <TableRow
+            key={row.title}
+            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+          >
+            <TableCell><a style={{cursor: 'pointer', textDecoration: 'underline'}} onClick={()=>props.handleClick(row)}>{row.title}</a></TableCell>
+            <TableCell >{row.pages.length}</TableCell>
+            <TableCell >{row.createdAt}</TableCell>
+            <TableCell >
+                <IconButton style={{color:"red"}} >
+                    <DeleteIcon />
+                </IconButton>
+            </TableCell>
+          </TableRow>
+          ))}
           </TableBody>
-        </Table>
-      </TableContainer>
-    )
+          </Table>
+          </TableContainer>
+
+        : <img style={{width: 150, height: 200}} src={NothingFound}/>}
+      </Box>
+      )
+
+        
 }
 
 export const NothingCreated = ()=>{
@@ -183,7 +192,15 @@ export const Page = (props)=>{
 
 
 export const PagesTable = (props)=>{
+  const pages = useRouteLoaderData('pages')
+  const [data, setData] = useState([]) 
 
+
+
+  useEffect(()=>{
+    setData(pages.data)
+    console.log(data);
+  },[])
 
 
 
@@ -199,15 +216,13 @@ export const PagesTable = (props)=>{
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.data.map((row) => (
+            {data.map((row) => (
               <TableRow
-                key={row.name}
+                key={row.content.title}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell component="th" scope="row">
-                  {row.title}
-                </TableCell>
-                <TableCell >{row.content}</TableCell>
+                <TableCell >{`${row.content.title}`}</TableCell>
+                <TableCell >{`${row.content.body.slice(0, 100)}...`}</TableCell>
                 <TableCell >{row.createdAt}</TableCell>
                 <TableCell >
                     <IconButton style={{color:"red"}} >
