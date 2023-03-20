@@ -11,6 +11,7 @@ router.get('/auth/google/callback',
   function(req, res) {
     console.log(req.user.id);
     // Successful authentication, redirect home.
+    
     res.redirect(`http://153.92.214.13/book?email=${req.user.email}&fullname=${req.user.name}&secret=${req.user.secret}&id=${req.user.id}`);
 });
 
