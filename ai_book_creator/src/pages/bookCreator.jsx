@@ -101,12 +101,12 @@ export const BookCreator = ()=>{
     const handleDeleteBook = async()=>{
         setLoadingDelete(true)
         console.log('whaaaaat');
-        const deleteBook = await axios.post('http://localhost:8080/api/removeBook', {
+        const deleteBook = await axios.post('http://153.92.214.13:8080/api/removeBook', {
             id: idDelete
         })
 
         if (deleteBook) {
-            const dele = await axios.post('http://localhost:8080/api/getAllBooks', {
+            const dele = await axios.post('http://153.92.214.13:8080/api/getAllBooks', {
             id: user._id
             })
             if(dele){
@@ -142,7 +142,7 @@ export const BookCreator = ()=>{
         const user =  JSON.parse(data)
 
 
-        const saveBook = await axios.post('http://localhost:8080/api/createBook', {
+        const saveBook = await axios.post('http://153.92.214.13:8080/api/createBook', {
             title: bookTitleInput,
             user_id: user._id,
             createdAt: new Date().toISOString().slice(0, 10)
@@ -183,7 +183,7 @@ export const BookCreator = ()=>{
                     userId: user._id,
                     title: title
                 }
-                const generateContent = await axios.post('http://localhost:8080/api/createPage', data, {
+                const generateContent = await axios.post('http://153.92.214.13:8080/api/createPage', data, {
                     headers: {
                         'Content-Type': "application/json",
                         'Accept': "application/json",
@@ -193,7 +193,7 @@ export const BookCreator = ()=>{
                 if(!generateContent){
                     alert('error occurred please try later')
                 }else{
-                    const reduceCredits = await axios.post('http://localhost:8080/api/reduceCredits', {
+                    const reduceCredits = await axios.post('http://153.92.214.13:8080/api/reduceCredits', {
                         id: user._id
                     })
                     setContent(generateContent.data.data)
@@ -206,7 +206,7 @@ export const BookCreator = ()=>{
     }
     const handleDeletePage= async ()=>{
         setLoadingDelete(true)
-            const deletePage = await axios.post('http://localhost:8080/api/removePage', {
+            const deletePage = await axios.post('http://153.92.214.13:8080/api/removePage', {
                 id: pageId
             })
 
@@ -215,7 +215,7 @@ export const BookCreator = ()=>{
             console.log('boooooooooooooooooooooooooooook', bookId);
             const data = await  localStorage.getItem('user');
               const user = JSON.parse(data)
-              const req = await axios.post('http://localhost:8080/api/getPageById', {
+              const req = await axios.post('http://153.92.214.13:8080/api/getPageById', {
                 userId: user._id,
                 bookId: bookId
               })

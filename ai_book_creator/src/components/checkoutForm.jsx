@@ -44,7 +44,7 @@ export const CheckoutForm = ()=> {
         const dataU = await JSON.parse(user)
         const pack = await localStorage.getItem('pack')
         const dataP = await JSON.parse(pack)
-        const data = await axios.post('http://localhost:8080/api/updateUserCredits', {
+        const data = await axios.post('http://153.92.214.13:8080/api/updateUserCredits', {
             user_id: dataU._id,
             credits: dataP.credits
         })

@@ -33,7 +33,7 @@ export const Login = ()=>{
                 </Typography>
 
 
-                <Button href='http://localhost:8080/auth/google' style={{width: '90%', height: 40, marginBottom: 10, position: 'relative'}} variant="outlined">
+                <Button href='http://153.92.214.13:8080/auth/google' style={{width: '90%', height: 40, marginBottom: 10, position: 'relative'}} variant="outlined">
                     <img style={{width: 30, height: 30, position: 'absolute', left: 5}} src={GoogleIcon} />
                     Login with Google
                 </Button>

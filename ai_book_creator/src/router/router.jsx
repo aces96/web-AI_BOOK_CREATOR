@@ -24,10 +24,10 @@ export const router = createBrowserRouter(
         <Route id="book" path="book" loader={async ({ request })=>{
           const url = new URL(request.url);
           const id = url.searchParams.get("id");
-            const books = await axios.post('http://localhost:8080/api/getAllBooks', {
+            const books = await axios.post('http://153.92.214.13:8080/api/getAllBooks', {
               id: id
             })
-            const user = await axios.post('http://localhost:8080/api/getUser', {
+            const user = await axios.post('http://153.92.214.13:8080/api/getUser', {
               id: id
             })
             if(books.data == null || user.data == null){
@@ -47,7 +47,7 @@ export const router = createBrowserRouter(
               const bookId = url.searchParams.get('bookId');
               const data = await  localStorage.getItem('user');
               const user = JSON.parse(data)
-              const req = await axios.post('http://localhost:8080/api/getPageById', {
+              const req = await axios.post('http://153.92.214.13:8080/api/getPageById', {
                 userId: user._id,
                 bookId: bookId
               })

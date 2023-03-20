@@ -13,7 +13,7 @@ export const Payment = ()=>{
 
 
         useEffect(() => {
-            fetch("http://localhost:8080/api/stripeConfig").then(async (r) => {
+            fetch("http://153.92.214.13:8080/api/stripeConfig").then(async (r) => {
             const { publishableKey } = await r.json();
             setStripePromise(loadStripe(publishableKey));
             });
@@ -22,7 +22,7 @@ export const Payment = ()=>{
 
         useEffect(() => {
 
-            axios.post("http://localhost:8080/api/create-payment-intent", {
+            axios.post("http://153.92.214.13:8080/api/create-payment-intent", {
                 price: 100
             }).then(async (result) => {
                 var { clientSecret } =  result.data;
