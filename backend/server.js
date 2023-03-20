@@ -6,7 +6,11 @@ const cors = require('cors');
 const bookRouter = require('./router/book.router')
 const pageRouter = require('./router/page.router')
 const googleAuth = require('./router/auth.router')
+const stripeRouter = require('./router/stripe.router')
+const userRouter = require('./router/user.route')
 const passport = require("passport");
+
+
 
 
 
@@ -32,6 +36,8 @@ require("./auth/google.auth")(passport);
 
 app.use('/api', bookRouter)
 app.use('/api', pageRouter)
+app.use('/api', stripeRouter)
+app.use('/api', userRouter)
 app.use('/', googleAuth)
 
 

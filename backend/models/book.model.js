@@ -5,10 +5,10 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    user_id: {
+    user_id: [{
         type: mongoose.Schema.ObjectId,
         ref: 'user',
-    },
+    }],
     pages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'page'}],
     createdAt : {
         type: String

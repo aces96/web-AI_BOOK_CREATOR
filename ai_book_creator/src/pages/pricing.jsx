@@ -1,4 +1,6 @@
 import { Box, Typography } from "@mui/material"
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import AIWriter from '../assets/images/AIWRITER.png'
 import { PricingSection } from "../components/pricing.components"
 
@@ -8,6 +10,15 @@ import { PricingSection } from "../components/pricing.components"
 
 
 export const Pricing = ()=>{
+    const navigate = useNavigate()
+
+
+    useEffect(()=>{
+        const data = localStorage.getItem('user')
+        if(JSON.parse(data) == null){
+            navigate('/login')
+        }
+    },[])
 
     return (
         <Box sx={{width: '100%', height: '100vh', background: `url(${AIWriter})`}}>

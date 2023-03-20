@@ -1,6 +1,7 @@
 const { Configuration, OpenAIApi } = require("openai");
 const dotenv = require('dotenv').config();
 const pageModal = require("../models/pages.model")
+const bookModal = require('../models/book.model')
 const mongoose = require('mongoose')
 
 
@@ -20,15 +21,19 @@ exports.createPage = async (req,res)=>{
         const content = await openai.createCompletion({
             model: 'text-davinci-003',
             prompt: prompt,
-            max_tokens: 400,
-            temperature: 0.5,
+            max_tokens: 350,
+            temperature: 0.6,
             top_p: 1
         })
 
 
         const addPage = new pageModal({ content: {body: content.data.choices[0].text, title: title}, user_id: new mongoose.Types.ObjectId(userId) , book_id: new mongoose.Types.ObjectId(bookId) })
 
-        await addPage.save()
+        const data = await addPage.save()
+
+        const da = await bookModal.findByIdAndUpdate(bookId, {pages: new mongoose.Types.ObjectId(data.id)})
+
+        console.log('daaaaaaaa', da);
 
         res.status(200).json({
             data: content.data.choices[0].text
@@ -61,4 +66,18 @@ exports.getPagesById = async (req,res)=>{
     } catch (error) {
         res.send(error)
     }
+}
+
+exports.deletePageById = async (req,res)=>{
+        const {id} = req.body
+
+        try {
+            console.log(id);
+            const remove = await pageModal.findByIdAndRemove(id)
+                res.status(200).json({
+                    done: true
+                })
+        } catch (error) {
+            res.send(error)
+        }
 }

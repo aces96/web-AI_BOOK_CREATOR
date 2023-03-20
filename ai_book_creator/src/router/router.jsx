@@ -9,6 +9,7 @@ import { Pricing } from "../pages/pricing";
 import { Login } from "../pages/login";
 import { BookCreator } from "../pages/bookCreator";
 import { BooksTables } from "../components/bookCreator.components";
+import { Payment } from "../pages/payments";
 import axios from "axios";
 
 
@@ -23,27 +24,34 @@ export const router = createBrowserRouter(
         <Route id="book" path="book" loader={async ({ request })=>{
           const url = new URL(request.url);
           const id = url.searchParams.get("id");
-          const books = await axios.post('http://localhost:8080/api/getAllBooks', {
-            id: id
-        })
-          if(books.data == null){
-              return null
-          }else {
-            console.log('heeeeeeeeeeeeeeeeeey', books.data);
-            return books.data.data
-          }
+            const books = await axios.post('http://localhost:8080/api/getAllBooks', {
+              id: id
+            })
+            const user = await axios.post('http://localhost:8080/api/getUser', {
+              id: id
+            })
+            if(books.data == null || user.data == null){
+                return null
+            }else {
+              console.log('heeeeeeeeeeeeeeeeeey', books.data.data);
+              return {
+                books:books.data.data,
+                user: user.data.user
+              }
+            }
+         
         }} element={<BookCreator />}>
             <Route path="book_table" element={<BookCreator/>}/>
-            <Route id="pages" path="pages_table/:bookId" loader={async ({request})=>{
+            <Route id="pages" path="pages_table" loader={async ({request})=>{
               const url = new URL(request.url);
-              const bookId = url.pathname.split('/').pop();
+              const bookId = url.searchParams.get('bookId');
               const data = await  localStorage.getItem('user');
               const user = JSON.parse(data)
               const req = await axios.post('http://localhost:8080/api/getPageById', {
-                userId: user.id,
+                userId: user._id,
                 bookId: bookId
               })
-              console.log('reeeeeeeeeeq',req.data)
+              console.log('reeeeeeeeeeq yoooooooo',req)
 
 
               return req
@@ -51,6 +59,7 @@ export const router = createBrowserRouter(
             }} element={<BookCreator/>}/>
             <Route path="create_page" element={<BookCreator/>}/>
         </Route>
+        <Route path="payment" element={<Payment/>}/>
       </Route>
     )
   );

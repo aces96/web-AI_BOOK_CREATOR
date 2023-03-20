@@ -16,6 +16,7 @@ import SecondPageCover from '../assets/images/Margo.jpg'
 import StyledText from '../assets/images/textStyled.png'
 import Pencil from '../assets/images/pencil.png'
 import Card1img from '../assets/images/card1.png'
+import { useNavigate } from 'react-router-dom';
 import Card2img from '../assets/images/card2.png'
 import Card3img from '../assets/images/card3.png'
 import '../index.css'
@@ -27,6 +28,9 @@ import './components.css'
 
 
 export const NavBar = ()=>{
+
+    const navigate = useNavigate()
+
     return (
         <Box sx={{width: '100%', height: "10%"}}>
           <AppBar style={{width: '100%', height: '100%', backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}} position="static">
@@ -34,20 +38,17 @@ export const NavBar = ()=>{
             <Typography  fontWeight={800} color={'black'} variant='h5' >
               AI Book Creator
             </Typography>
-            <Toolbar style={{ width: '28%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+            <Toolbar style={{ width: '30%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
               
               <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'black', cursor: 'pointer', fontSize: 16 }}>
-                <a style={{color: "black"}}>HOME</a>
+                <a onClick={()=>navigate('/')} style={{color: "black"}}>HOME</a>
               </Typography>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'black', cursor: 'pointer', fontSize: 16 }}>
-                <a style={{color: "black"}}>PRICING</a>
+                <a onClick={()=>navigate('pricing')} style={{color: "black"}}>PRICING</a>
               </Typography>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'black', cursor: 'pointer', fontSize: 16 }}>
-                <a style={{color: "black"}}>ABOUT US</a>
-              </Typography>
-              <Button style={{color: 'black', backgroundColor: '#ffda00',  borderRadius: 15, width: 120, height: 40}} >Sign Up</Button>
+              <Button onClick={()=>navigate('login')} style={{color: 'black', backgroundColor: '#ffda00',  borderRadius: 15, width: 120, height: 40}} >Sign Up</Button>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'black', cursor: 'pointer', fontSize: 16, marginLeft: 1 }}>
-                <a style={{color: "#3C79F5"}}>SIGN IN</a>
+                <a onClick={()=>navigate('login')} style={{color: "black"}}>SIGN IN</a>
               </Typography>
             </Toolbar>
             </Box>

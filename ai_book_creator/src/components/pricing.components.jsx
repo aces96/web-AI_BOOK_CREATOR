@@ -2,11 +2,14 @@ import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import { Box, Typography, Button } from "@mui/material"
 import Grid from '@mui/material/Grid';
+import { useNavigate } from 'react-router-dom';
 
 
 
 
 export const PricingSection = ()=>{
+
+    const navigate = useNavigate()
 
 
     const Item = styled(Paper)(({ theme }) => ({
@@ -46,7 +49,13 @@ export const PricingSection = ()=>{
                         </Typography>
                     </Box>
 
-                    <Button variant='contained' style={{backgroundColor: '#EB5353', borderRadius: 10, width: '60%'}}>
+                    <Button onClick={()=>{
+                        localStorage.setItem('pack',JSON.stringify({
+                            price: 9.99,
+                            credits: 10
+                        }))
+                        navigate('/payment')
+                    }}variant='contained' style={{backgroundColor: '#EB5353', borderRadius: 10, width: '60%'}}>
                         Subscribe
                     </Button>
                 </Box>
@@ -73,7 +82,13 @@ export const PricingSection = ()=>{
                         </Typography>
                     </Box>
 
-                    <Button variant='contained' style={{backgroundColor: '#F9D923', borderRadius: 10, width: '60%'}}>
+                    <Button onClick={()=>{
+                        localStorage.setItem('pack',JSON.stringify({
+                            price: 29.99,
+                            credits: 50
+                        }))
+                        navigate('/payment')
+                    }} variant='contained' style={{backgroundColor: '#F9D923', borderRadius: 10, width: '60%'}}>
                         Subscribe
                     </Button>
                 </Box>
@@ -100,7 +115,13 @@ export const PricingSection = ()=>{
                         </Typography>
                     </Box>
 
-                    <Button variant='contained' style={{backgroundColor: '#36AE7C', borderRadius: 10, width: '60%'}}>
+                    <Button onClick={()=>{
+                        localStorage.setItem('pack',JSON.stringify({
+                            price: 49.99,
+                            credits: 110
+                        }))
+                        navigate('/payment')
+                    }} variant='contained' style={{backgroundColor: '#36AE7C', borderRadius: 10, width: '60%'}}>
                         Subscribe
                     </Button>
                 </Box>

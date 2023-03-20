@@ -10,8 +10,6 @@ export const Home = ()=>{
             <Header/>
             <BookSection />
             <LearnMore />
-            {/* <div style={{width: '100%',  height: '90%'}}></div> */}
-
         </Box>
     )
 

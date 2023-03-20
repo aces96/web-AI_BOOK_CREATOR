@@ -17,12 +17,27 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {  useLocation, useParams, useLoaderData } from "react-router-dom";
 import Modal from '@mui/material/Modal';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
-import { useNavigate , useRouteLoaderData} from "react-router-dom";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { useNavigate , useRouteLoaderData, useSearchParams} from "react-router-dom";
 import NothingFound from '../assets/images/nothing.png'
+import DownloadIcon from '@mui/icons-material/Download';
+import * as jsdocx from 'jsdocx'
+import { saveAs } from 'file-saver';
+
+
 
 
 
 export const SideBar = (props)=>{
+
+  const [searchParams] = useSearchParams()
+
+  const [user, setUser] = useState('')
+
+  useEffect(()=>{
+    const data = localStorage.getItem('user')
+    setUser(JSON.parse(data))
+  },[])
 
     const location = useLocation()
     const navigate = useNavigate()
@@ -59,7 +74,7 @@ export const SideBar = (props)=>{
                 <Typography color={'white'} variant="h6">
                     <b>Add a new page to your book</b>
                 </Typography>
-                <Button onClick={()=>navigate('create_page')} variant="contained" style={{backgroundColor: '#03C988', width: '80%', marginTop: 15}}>
+                <Button onClick={()=>navigate(`create_page?&id=${user._id}&bookId=${searchParams.get('bookId')}`)} variant="contained" style={{backgroundColor: '#03C988', width: '80%', marginTop: 15}}>
                     Add New
                 </Button>
                 </Box>
@@ -103,6 +118,14 @@ export const SideBar = (props)=>{
                     <Button onClick={()=>props.handleGenerate()} style={{width: '95%', backgroundColor: '#16C79A'}} variant="contained" >
                         Generate
                     </Button>
+                    {props.loading &&
+                      <Box sx={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '40px'}}>
+                        <CircularProgress style={{color: 'white'}}/>
+                        <Typography variant="overline">
+                          wait a moment while generating
+                        </Typography>
+                      </Box>
+                    }
                 </Box>
                 }
         </Box>
@@ -111,9 +134,8 @@ export const SideBar = (props)=>{
 
 export const BooksTables = (props)=>{
 
-
       return (
-        <Box>
+        <Box sx={{width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
         {props.data.length > 0  ? 
 
           <TableContainer component={Paper}>
@@ -132,11 +154,14 @@ export const BooksTables = (props)=>{
             key={row.title}
             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
           >
-            <TableCell><a style={{cursor: 'pointer', textDecoration: 'underline'}} onClick={()=>props.handleClick(row)}>{row.title}</a></TableCell>
+            <TableCell><a style={{cursor: 'pointer', textDecoration: 'underline'}} onClick={()=>{
+              props.handleClick(row)
+              console.log('rooow', setRow);
+            }}>{row.title}</a></TableCell>
             <TableCell >{row.pages.length}</TableCell>
             <TableCell >{row.createdAt}</TableCell>
             <TableCell >
-                <IconButton style={{color:"red"}} >
+                <IconButton onClick={()=>props.openDelete(row._id)} style={{color:"red"}} >
                     <DeleteIcon />
                 </IconButton>
             </TableCell>
@@ -146,7 +171,16 @@ export const BooksTables = (props)=>{
           </Table>
           </TableContainer>
 
-        : <img style={{width: 150, height: 200}} src={NothingFound}/>}
+        : 
+        
+        <>
+          <img style={{width: 300, height: 300}} src={NothingFound}/>
+        <Typography color={'#2F89FC'} variant="h5">
+          YOU DON'T HAVE ANY BOOKS START CREATING RIGHT NOW !
+        </Typography>
+        </>
+        
+        }
       </Box>
       )
 
@@ -192,48 +226,66 @@ export const Page = (props)=>{
 
 
 export const PagesTable = (props)=>{
-  const pages = useRouteLoaderData('pages')
-  const [data, setData] = useState([]) 
 
 
 
-  useEffect(()=>{
-    setData(pages.data)
-    console.log(data);
-  },[])
+
 
 
 
     return(
-        <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-          <TableHead>
-            <TableRow>
-              <TableCell >Title</TableCell>
-              <TableCell >content</TableCell>
-              <TableCell >Created at</TableCell>
-              <TableCell >Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((row) => (
-              <TableRow
-                key={row.content.title}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell >{`${row.content.title}`}</TableCell>
-                <TableCell >{`${row.content.body.slice(0, 100)}...`}</TableCell>
-                <TableCell >{row.createdAt}</TableCell>
-                <TableCell >
-                    <IconButton style={{color:"red"}} >
-                        <DeleteIcon />
-                    </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Box sx={{width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+          {props.data.length > 0 ?
+                      <TableContainer component={Paper}>
+                      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell >Title</TableCell>
+                            <TableCell >content</TableCell>
+                            <TableCell >Action</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {props.data.map((row) => (
+                            <TableRow
+                              key={row.content.title}
+                              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                              <TableCell >{`${row.content.title}`}</TableCell>
+                              <TableCell >{`${row.content.body.slice(0, 150)}...`}</TableCell>
+                              <TableCell style={{display: 'flex', flexDirection: 'row'}}>
+                                  <IconButton onClick={()=>{
+                                      let doc = new jsdocx.Document()
+                                      let p = doc.addParagraph()
+                                      p.addRun().addText(row.content.title)
+                                      p.addRun().addText(row.content.body)
+                                      p.addFormat().addHAlignment().setVal('center')
+                                      doc.generate().then((content) => {
+                                        saveAs(content, "hello world.docx");
+                                      })
+                                  }}>
+                                    <DownloadIcon style={{color: '#39B5E0'}}/>
+                                  </IconButton>
+                                  <IconButton onClick={()=>{
+                                    props.openDelete(row._id)
+                                  }} style={{color:"red"}} >
+                                      <DeleteIcon />
+                                  </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+          :
+          <>
+          <img style={{width: 300, height: 300}} src={NothingFound}/>
+        <Typography color={'#2F89FC'} variant="h5">
+          YOU DON'T HAVE ANY PAGES START CREATING RIGHT NOW !
+        </Typography>
+        </>
+          }
+      </Box>
     )
 }
 
@@ -275,6 +327,92 @@ export const AddBookModal = (props)=>{
         {props.loading ? 
           <CircularProgress size={20}/>
         : "Save"}
+      </Button>
+    </Box>
+  </Modal>
+  )
+}
+
+
+export const DeleteBookModal = (props)=>{
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    minHeight: 250,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  };
+  
+
+  return (
+    <Modal
+    open={props.open}
+    onClose={props.handleClose}
+    aria-labelledby="modal-modal-title"
+    aria-describedby="modal-modal-description"
+  >
+    <Box sx={style}>
+      <DeleteForeverIcon  style={{width: 70, height: 70, color: 'red'}} />
+      <Typography color={'black'} id="modal-modal-title" variant="h5">
+        Delete the book !
+      </Typography>
+      <Button onClick={()=>props.handleDeleteBook()}  variant="contained" style={{backgroundColor: 'red', width: '80%', marginTop: 15, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        {props.loading ? 
+          <CircularProgress size={20}/>
+        : "Delete"}
+      </Button>
+    </Box>
+  </Modal>
+  )
+}
+
+
+export const DeletePageModal = (props)=>{
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    minHeight: 250,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  };
+  
+
+  return (
+    <Modal
+    open={props.open}
+    onClose={props.handleClose}
+    aria-labelledby="modal-modal-title"
+    aria-describedby="modal-modal-description"
+  >
+    <Box sx={style}>
+      <DeleteForeverIcon  style={{width: 70, height: 70, color: 'red'}} />
+      <Typography color={'black'} id="modal-modal-title" variant="h5">
+        Delete the page !
+      </Typography>
+      <Button onClick={()=>props.handleDeletePage()}  variant="contained" style={{backgroundColor: 'red', width: '80%', marginTop: 15, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        {props.loading ? 
+          <CircularProgress size={20}/>
+        : "Delete"}
       </Button>
     </Box>
   </Modal>

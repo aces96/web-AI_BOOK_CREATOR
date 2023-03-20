@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema({
     },
     secret: {
         type: String
+    },
+    credits: {
+        type: Number,
+        default: 0
     }
 });
 

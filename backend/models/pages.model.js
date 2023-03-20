@@ -11,14 +11,14 @@ const pageSchema = new mongoose.Schema({
         type: String,
         default: 'Untitled'
     },
-    user_id: {
+    user_id: [{
         type: mongoose.Schema.ObjectId,
         ref: 'user',
-    },
-    book_id: {
+    }],
+    book_id: [{
         type: mongoose.Schema.ObjectId,
         ref: 'book',
-    },
+    }],
     createdAt: {
         type: String
     }
